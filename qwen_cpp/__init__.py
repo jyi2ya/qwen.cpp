@@ -38,7 +38,7 @@ class Pipeline(_C.Pipeline):
         num_threads: int = 0,
         stream: bool = False,
     ) -> Union[Iterator[str], str]:
-        input_ids = self.tokenizer.encode_history(history, max_context_length)
+        input_ids = self.tokenizer.encode_history(history)
         return self._generate(
             input_ids=input_ids,
             max_length=max_length,
@@ -66,7 +66,7 @@ class Pipeline(_C.Pipeline):
         num_threads: int = 0,
         stream: bool = False,
     ) -> Union[Iterator[str], str]:
-        input_ids = self.tokenizer.encode(prompt, max_context_length)
+        input_ids = self.tokenizer.encode(prompt)
         return self._generate(
             input_ids=input_ids,
             max_length=max_length,
@@ -148,7 +148,7 @@ class Pipeline(_C.Pipeline):
             next_token_id = self.model.generate_next_token(input_ids, gen_config, n_past, n_ctx)
             n_past = len(input_ids)
             input_ids.append(next_token_id)
-            if next_token_id == self.model.config.eos_token_id:
+            if next_token_id == self.model.config.eos_token_id or next_token_id == self.model.config.im_start_id or next_token_id == self.model.config.im_end_id:
                 break
 
         output = self.tokenizer.decode(input_ids[n_ctx:])

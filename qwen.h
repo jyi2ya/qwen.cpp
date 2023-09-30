@@ -270,6 +270,8 @@ class QwenTokenizer {
 
     auto encode(const std::string &text) -> std::vector<int>;
 
+    auto encode_history(const std::vector<std::string> &history) -> std::vector<int>;
+
     auto decode(const std::vector<int> &ids) -> std::string;
 
     auto build_prompt(const std::vector<std::string> &history) const -> std::string;

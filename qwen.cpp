@@ -297,6 +297,12 @@ auto QwenTokenizer::encode(const std::string &text) -> std::vector<int> {
   return ids;
 }
 
+auto QwenTokenizer::encode_history(const std::vector<std::string> &history) -> std::vector<int> {
+    std::string prompt = build_prompt(history);
+    std::vector<int> input_ids = encode(prompt);
+    return input_ids;
+}
+
 auto QwenTokenizer::decode(const std::vector<int> &ids) -> std::string {
   std::vector<int> normal_ids(ids);
   normal_ids.erase(std::remove_if(normal_ids.begin(), normal_ids.end(), [this](int id) { return is_special_id(id); }),
